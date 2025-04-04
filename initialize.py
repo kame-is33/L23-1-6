@@ -253,7 +253,7 @@ def initialize_employee_data():
     if "employee_data" in st.session_state:
         return
 
-    employee_path = os.path.join("data", "社員名簿.csv")
+    employee_path = os.path.join("data", "社員について", "社員名簿.csv")
     if os.path.exists(employee_path):
         try:
             df = pd.read_csv(employee_path)
