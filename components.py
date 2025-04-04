@@ -349,9 +349,57 @@ def display_contact_llm_response(llm_response):
 
 def render_debug_toggle():
     """
-    DEBUGログ表示のオン・オフスイッチ
-    選択状態はセッションステートに保存される
+    DEBUGログ表示のオン・オフ切り替えスイッチ
+    アイコンボタンをクリックすると、チェックボックスが表示される
     """
     st.sidebar.markdown("---")
-    st.sidebar.subheader("⚙️ 開発者ツール")
-    st.session_state.show_debug_logs = st.sidebar.checkbox("🔧 DEBUGログを表示する", value=False)
+    # 初期化（初回実行時のみ）
+    if "show_debug_toggle" not in st.session_state:
+        st.session_state.show_debug_toggle = False
+
+    # アイコンボタンで表示切り替え
+    if st.sidebar.button("⚙️ 開発者メニューを切り替え"):
+        st.session_state.show_debug_toggle = not st.session_state.show_debug_toggle
+
+    # チェックボックス表示（表示ONの場合）
+    if st.session_state.show_debug_toggle:
+        st.sidebar.subheader("🛠️ 開発者ツール")
+        st.session_state.show_debug_logs = st.sidebar.checkbox("🔧 DEBUGログを表示する", value=False)
+
+def get_dataframe_display_options(df: pd.DataFrame, max_chars: int = 3000) -> pd.DataFrame:
+    """
+    表示可能な文字数の範囲でDataFrameをカットする関数（Streamlit表示制限対応）
+    
+    Args:
+        df (pd.DataFrame): 表示対象のDataFrame
+        max_chars (int): 表示可能な最大文字数
+    
+    Returns:
+        pd.DataFrame: カット後のDataFrame
+    """
+    output_lines = []
+    current_length = 0
+
+    for i, row in df.iterrows():
+        line = row.to_string()
+        if current_length + len(line) > max_chars:
+            break
+        output_lines.append(i)
+        current_length += len(line)
+
+    return df.loc[output_lines]
+
+def render_dataframe(df: pd.DataFrame, title: str = "検索結果（社内問い合わせ）") -> None:
+    """
+    社内問い合わせの回答としてDataFrameを表示するための関数
+    
+    Args:
+        df (pd.DataFrame): 表示するDataFrame
+        title (str): 表示タイトル
+    """
+    if df.empty:
+        st.warning("該当するデータが見つかりませんでした。")
+        return
+
+    st.markdown(f"### {title}")
+    st.dataframe(df, use_container_width=True)

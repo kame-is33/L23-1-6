@@ -42,6 +42,7 @@ APP_BOOT_MESSAGE = "アプリが起動されました。"
 MODEL = "gpt-4o-mini"
 TEMPERATURE = 0.5
 RETRIEVER_TOP_K = 5  # ベクターストアから取得するドキュメント数
+MAX_CONTEXT_LENGTH = 4500  # 社内問い合わせで利用する文脈の最大文字数
 
 # ==========================================
 # チャンク分割設定

@@ -14,6 +14,7 @@ from langchain_openai import ChatOpenAI
 from langchain.chains import create_history_aware_retriever, create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 import constants as ct
+import pandas as pd
 
 
 ############################################################
@@ -59,6 +60,22 @@ def build_error_message(message):
     return "\n".join([message, ct.COMMON_ERROR_MESSAGE])
 
 
+def add_employee_context(chat_message, employee_context):
+    """
+    チャットメッセージに社員情報を付加
+
+    Args:
+        chat_message: ユーザー入力値
+        employee_context: 社員情報
+
+    Returns:
+        修正されたチャットメッセージ
+    """
+    if employee_context:
+        return f"以下の社員情報を参照して質問に答えてください：\\n{employee_context}\\n\\n{chat_message}"
+    return chat_message
+
+
 def get_llm_response(chat_message, employee_context=""):
     """
     LLMからの回答取得
@@ -89,6 +106,7 @@ def get_llm_response(chat_message, employee_context=""):
     else:
         # モードが「社内問い合わせ」の場合のプロンプト
         question_answer_template = ct.SYSTEM_PROMPT_INQUIRY
+
     # LLMから回答を取得する用のプロンプトテンプレートを作成
     question_answer_prompt = ChatPromptTemplate.from_messages(
         [
@@ -109,8 +127,7 @@ def get_llm_response(chat_message, employee_context=""):
     chain = create_retrieval_chain(history_aware_retriever, question_answer_chain)
 
     # プロンプトの前処理として、社員データがある場合にチャット入力に先行して付与
-    if employee_context:
-        chat_message = f"以下の社員情報を参照して質問に答えてください：\\n{employee_context}\\n\\n{chat_message}"
+    chat_message = add_employee_context(chat_message, employee_context)
 
     # LLMへのリクエストとレスポンス取得
     llm_response = chain.invoke({"input": chat_message, "chat_history": st.session_state.chat_history})
@@ -118,3 +135,48 @@ def get_llm_response(chat_message, employee_context=""):
     st.session_state.chat_history.extend([HumanMessage(content=chat_message), llm_response["answer"]])
 
     return llm_response
+
+
+def format_row(row):
+    """
+    従業員の情報をフォーマットして1人分の文字列を作成
+    
+    Args:
+        row: 従業員データの1行（pandas.Series）
+    
+    Returns:
+        整形された文字列
+    """
+    parts = []
+    
+    def add(label, key):
+        value = row.get(key, "不明")
+        value = "不明" if pd.isna(value) or value == "" else str(value)
+        parts.append(f"- **{label}**: {value}")
+
+    parts.append(f"#### {row.get('氏名（フルネーム）', '不明')}")
+    add("社員ID", "社員ID")
+    add("性別", "性別")
+    add("生年月日", "生年月日")
+    add("年齢", "年齢")
+    add("メールアドレス", "メールアドレス")
+    add("従業員区分", "従業員区分")
+    add("入社日", "入社日")
+    add("役職", "役職")
+
+    # スキルセットと保有資格はカンマ区切りでリスト表示
+    skills = row.get("スキルセット", "")
+    skills_list = [s.strip() for s in str(skills).split(",") if s.strip()]
+    if skills_list:
+        parts.append("- **スキルセット**: " + ", ".join(skills_list))
+
+    qualifications = row.get("保有資格", "")
+    qual_list = [q.strip() for q in str(qualifications).split(",") if q.strip()]
+    if qual_list:
+        parts.append("- **保有資格**: " + ", ".join(qual_list))
+
+    add("大学名", "大学名")
+    add("学部・学科", "学部・学科")
+    add("卒業年月日", "卒業年月日")
+
+    return "\n".join(parts)

@@ -137,8 +137,9 @@ def initialize_retriever():
     # ベクターストアの作成
     db = Chroma.from_documents(splitted_docs, embedding=embeddings)
 
+    # kを5に変更して最大検索ドキュメント数を拡大
     # ベクターストアを検索するRetrieverの作成
-    st.session_state.retriever = db.as_retriever(search_kwargs={"k": 3})
+    st.session_state.retriever = db.as_retriever(search_kwargs={"k": 5})
 
 
 def initialize_session_state():
