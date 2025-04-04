@@ -53,6 +53,9 @@ st.markdown(
     [data-testid="stSidebar"] {
         background-color: #f0f2f6;
     }
+    .main {
+        background-color: #ffffff;
+    }
     </style>
     """,
     unsafe_allow_html=True

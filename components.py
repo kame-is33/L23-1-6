@@ -20,26 +20,13 @@ def display_app_title():
     タイトル表示
     """
     st.markdown(f"## {ct.APP_NAME}")
-    st.markdown(
-        """
-        <div style="display: flex; align-items: center; background-color: #f0fdf4; padding: 1rem; border-radius: 10px;">
-            <div style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; margin-right: 0.5rem;">
-              <img src="https://raw.githubusercontent.com/kame-is33/L23-1-6/main/assets/robot_icon_white.png" alt="AI Bot" width="30" height="30">
-            </div>
-            <span>こんにちは。私は社内文書の情報をもとに回答する生成AIチャットボットです。サイドバーで利用目的を選択し、画面下部のチャット欄からメッセージを送信してください。</span>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
- 
-    st.markdown(
-        """
-        <div style="margin-top: 1rem; background-color: #fff7e6; padding: 1rem; border-radius: 10px;">
-            ⚠️ <span>具体的に入力したほうが期待通りの回答を得やすいです。</span>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    
+    # シンプルなチャットボット紹介文とアイコン表示
+    st.image(ct.BOT_ICON, width=30)
+    st.markdown("こんにちは。私は社内文書の情報をもとに回答する生成AIチャットボットです。サイドバーで利用目的を選択し、画面下部のチャット欄からメッセージを送信してください。")
+    
+    # 注意文（シンプルな背景付きボックス）
+    st.info(f"{ct.ADVICE_ICON} 具体的に入力したほうが期待通りの回答を得やすいです。")
 
 
 def display_select_mode():
@@ -62,26 +49,9 @@ def display_initial_ai_message():
     AIメッセージの初期表示（右側メイン画面）
     """
     with st.chat_message("assistant"):
-          st.markdown(
-              """
-              <div style="display: flex; align-items: center; background-color: #f0fdf4; padding: 1rem; border-radius: 10px;">
-                  <div style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; margin-right: 0.5rem;">
-                    <img src="https://raw.githubusercontent.com/kame-is33/L23-1-6/main/assets/robot_icon_white.png" alt="AI Bot" width="30" height="30">
-                  </div>
-                  <span>こんにちは。私は社内文書の情報をもとに回答する生成AIチャットボットです。サイドバーで利用目的を選択し、画面下部のチャット欄からメッセージを送信してください。</span>
-              </div>
-              """,
-              unsafe_allow_html=True
-          )
- 
-          st.markdown(
-              """
-              <div style="margin-top: 1rem; background-color: #fff7e6; padding: 1rem; border-radius: 10px;">
-                  ⚠️ <span>具体的に入力したほうが期待通りの回答を得やすいです。</span>
-              </div>
-              """,
-              unsafe_allow_html=True
-          )
+        # 「st.success()」とすると緑枠で表示される
+        st.markdown("こんにちは。私は社内文書の情報をもとに回答する生成AIチャットボットです。上記で利用目的を選択し、画面下部のチャット欄からメッセージを送信してください。")
+        st.markdown(f"{ct.ADVICE_ICON} 具体的に入力したほうが期待通りの回答を得やすいです。")
 
 
 def display_conversation_log():
@@ -373,29 +343,9 @@ def render_debug_toggle():
     開発者モードを切り替える小さなアイコン付きボタンを画面左下に表示。
     ボタンを押すとDEBUGログの表示/非表示が切り替わる。
     """
-    st.markdown(
-        """
-        <div style="position: fixed; bottom: 20px; left: 20px; z-index: 9999;">
-            <form action="" method="post">
-                <button type="submit" name="dev_toggle" style="background: none; border: none; cursor: pointer;">
-                    ⚙️ <span style="font-size: 0.8rem;">開発者</span>
-                </button>
-            </form>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    with st.sidebar.expander(f"{ct.DEBUG_ICON} 開発者メニュー", expanded=False):
+        st.checkbox("DEBUGログを表示する", key="debug_checkbox")
 
-    # ステート初期化
-    if "show_debug_logs" not in st.session_state:
-        st.session_state.show_debug_logs = False
-
-    if "dev_toggle" in st.session_state and st.session_state.dev_toggle:
-        st.session_state.show_debug_logs = not st.session_state.show_debug_logs
-
-    if st.session_state.show_debug_logs:
-        st.sidebar.subheader("⚙️ 開発者メニュー")
-        st.sidebar.checkbox("DEBUGログを表示する", key="debug_checkbox")
 
 def get_dataframe_display_options(df: pd.DataFrame, max_chars: int = 3000) -> pd.DataFrame:
     """

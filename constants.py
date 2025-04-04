@@ -7,7 +7,7 @@
 ############################################################
 from langchain_community.document_loaders import PyMuPDFLoader, Docx2txtLoader, TextLoader
 from langchain_community.document_loaders.csv_loader import CSVLoader
-
+from constants import BOT_ICON
 
 ############################################################
 # 共通変数の定義
@@ -25,6 +25,9 @@ LINK_SOURCE_ICON = ":material/link: "
 WARNING_ICON = ":material/warning:"
 ERROR_ICON = ":material/error:"
 SPINNER_TEXT = "回答生成中..."
+BOT_ICON = ":robot_face:"  # ロボットアイコンの追加
+DEBUG_ICON = ":material/bug-report:"  # デバッグ用のアイコン
+ADVICE_ICON = ":material/lightbulb:"  # 助言・ヒント用のアイコン
 
 
 # ==========================================
@@ -122,3 +125,4 @@ NO_DOC_MATCH_MESSAGE = """
 CONVERSATION_LOG_ERROR_MESSAGE = "過去の会話履歴の表示に失敗しました。"
 GET_LLM_RESPONSE_ERROR_MESSAGE = "回答生成に失敗しました。"
 DISP_ANSWER_ERROR_MESSAGE = "回答表示に失敗しました。"
+"""
