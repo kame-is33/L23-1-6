@@ -92,14 +92,20 @@ with st.sidebar:
     # モード表示
     cn.display_select_mode()
 
-    # 開発者メニュー切り替えボタンの表示
-    cn.render_dev_toggle_button()
+    # 入力例の表示
+    cn.display_sample_prompts()
+
+    # 開発者メニュー（左下に表示）
+    st.markdown("---")
+    dev_col1, dev_col2 = st.columns([0.15, 0.85])
+    with dev_col1:
+        st.markdown("🛠️", unsafe_allow_html=True)
+    with dev_col2:
+        if st.button("開発者モード", key="dev_mode_button", help="ログ表示などの開発用メニューの切り替え"):
+            st.session_state.show_debug_logs = not st.session_state.get("show_debug_logs", False)
 
 # タイトル表示
 cn.display_app_title()
-
-# 開発者メニュー切り替えボタンの表示
-cn.render_dev_toggle_button()
 
 ############################################################
 # 5. 会話ログの表示
