@@ -21,11 +21,11 @@ def display_app_title():
     """
     st.markdown(f"## {ct.APP_NAME}")
     
-    # シンプルなチャットボット紹介文とアイコン表示
-    if ct.BOT_ICON:
-        st.markdown(ct.BOT_ICON, unsafe_allow_html=True)
-    else:
-        st.markdown("🤖", unsafe_allow_html=True)
+    # シンプルなチャットボット紹介文とアイコン表示（エラー時は代替表示）
+    try:
+        st.image(ct.BOT_ICON, width=30)
+    except Exception:
+        st.markdown("🤖")
     st.markdown("こんにちは。私は社内文書の情報をもとに回答する生成AIチャットボットです。サイドバーで利用目的を選択し、画面下部のチャット欄からメッセージを送信してください。")
     
     # 注意文（シンプルな背景付きボックス）
