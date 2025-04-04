@@ -117,7 +117,7 @@ if chat_message:
             def format_row(row):
                 skills = str(row.get("スキルセット", "")).replace(",", "、").strip()
                 certs = str(row.get("保有資格", "")).replace(",", "、").strip()
-                return f"{row['氏名（フルネーム）']}（{row['役職']}） - {row['所属部署']}所属。スキル：{skills}。資格：{certs}。"
+                return f"{row['氏名（フルネーム）']}（{row['役職']}） - {row['部署']}所属。スキル：{skills}。資格：{certs}。"
             rows = [format_row(row) for _, row in df.iterrows()]
             employee_context = "\\n".join(rows)
         except Exception as e:
