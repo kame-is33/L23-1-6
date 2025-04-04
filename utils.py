@@ -180,3 +180,13 @@ def format_row(row):
     add("卒業年月日", "卒業年月日")
 
     return "\n".join(parts)
+
+def debug_log(message):
+    """
+    Streamlitアプリの開発時にのみログを表示するための関数
+
+    Args:
+        message: 表示したいログ内容
+    """
+    if st.session_state.get("show_debug_logs"):
+        st.sidebar.markdown(f"```text\n{message}\n```")
