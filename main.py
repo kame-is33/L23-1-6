@@ -112,36 +112,21 @@ if chat_message:
     # 社員名簿データの追加処理
     employee_context = ""
     if "人事" in chat_message or "従業員" in chat_message or "部署" in chat_message:
-        try:
-            df = pd.read_csv("data/社員について/社員名簿.csv")
-            def format_row(row):
-                def get_value(col):
-                    value = str(row.get(col, "")).strip()
-                    return value if value else "不明"
-
-                skills = get_value("スキルセット").replace(",", "、")
-                certs = get_value("保有資格").replace(",", "、")
-
-                return (
-                    f"- **氏名**: {get_value('氏名（フルネーム）')}\n"
-                    f"- **社員ID**: {get_value('社員ID')}\n"
-                    f"- **性別**: {get_value('性別')}\n"
-                    f"- **生年月日**: {get_value('生年月日')}\n"
-                    f"- **年齢**: {get_value('年齢')}\n"
-                    f"- **メールアドレス**: {get_value('メールアドレス')}\n"
-                    f"- **従業員区分**: {get_value('従業員区分')}\n"
-                    f"- **入社日**: {get_value('入社日')}\n"
-                    f"- **役職**: {get_value('役職')}\n"
-                    f"- **スキルセット**: {skills}\n"
-                    f"- **保有資格**: {certs}\n"
-                    f"- **大学名**: {get_value('大学名')}\n"
-                    f"- **学部・学科**: {get_value('学部・学科')}\n"
-                    f"- **卒業年月日**: {get_value('卒業年月日')}\n"
-                )
-            rows = [format_row(row) for _, row in df.iterrows()]
-            employee_context = "\\n".join(rows)
-        except Exception as e:
-            logger.warning(f"社員名簿の読み込みに失敗しました: {e}")
+            try:
+                df = pd.read_csv("data/社員について/社員名簿.csv")
+                df = df[df["氏名（フルネーム）"] != "氏名（フルネーム）"]
+                MAX_CONTEXT_LENGTH = 3000  # 最大文字数制限
+                rows = []
+                current_length = 0
+                for _, row in df.iterrows():
+                    formatted = format_row(row)
+                    current_length += len(formatted)
+                    if current_length > MAX_CONTEXT_LENGTH:
+                        break
+                    rows.append(formatted)
+                employee_context = "\n".join(rows)
+            except Exception as e:
+                logger.warning(f"社員名簿の読み込みに失敗しました: {e}")
 
     # 「st.spinner」でグルグル回っている間、表示の不具合が発生しないよう空のエリアを表示
     res_box = st.empty()
