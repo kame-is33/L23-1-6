@@ -115,9 +115,29 @@ if chat_message:
         try:
             df = pd.read_csv("data/社員について/社員名簿.csv")
             def format_row(row):
-                skills = str(row.get("スキルセット", "")).replace(",", "、").strip()
-                certs = str(row.get("保有資格", "")).replace(",", "、").strip()
-                return f"{row['氏名（フルネーム）']}（{row['役職']}） - {row['部署']}所属。スキル：{skills}。資格：{certs}。"
+                def get_value(col):
+                    value = str(row.get(col, "")).strip()
+                    return value if value else "不明"
+
+                skills = get_value("スキルセット").replace(",", "、")
+                certs = get_value("保有資格").replace(",", "、")
+
+                return (
+                    f"- **氏名**: {get_value('氏名（フルネーム）')}\n"
+                    f"- **社員ID**: {get_value('社員ID')}\n"
+                    f"- **性別**: {get_value('性別')}\n"
+                    f"- **生年月日**: {get_value('生年月日')}\n"
+                    f"- **年齢**: {get_value('年齢')}\n"
+                    f"- **メールアドレス**: {get_value('メールアドレス')}\n"
+                    f"- **従業員区分**: {get_value('従業員区分')}\n"
+                    f"- **入社日**: {get_value('入社日')}\n"
+                    f"- **役職**: {get_value('役職')}\n"
+                    f"- **スキルセット**: {skills}\n"
+                    f"- **保有資格**: {certs}\n"
+                    f"- **大学名**: {get_value('大学名')}\n"
+                    f"- **学部・学科**: {get_value('学部・学科')}\n"
+                    f"- **卒業年月日**: {get_value('卒業年月日')}\n"
+                )
             rows = [format_row(row) for _, row in df.iterrows()]
             employee_context = "\\n".join(rows)
         except Exception as e:
