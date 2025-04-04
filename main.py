@@ -47,6 +47,16 @@ def format_row(df):
 st.set_page_config(
     page_title=ct.APP_NAME
 )
+st.markdown(
+    """
+    <style>
+    [data-testid="stSidebar"] {
+        background-color: #f0f2f6;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # ログ出力を行うためのロガーの設定
 logger = logging.getLogger(ct.LOGGER_NAME)
@@ -78,11 +88,27 @@ if not "initialized" in st.session_state:
 ############################################################
 # 4. 初期表示
 ############################################################
+with st.sidebar:
+    # モード表示
+    cn.display_select_mode()
+
+    # 入力例の表示
+    st.markdown("### 【『社内文書検索』を選択した場合】")
+    st.info("入力内容と関連性が高い社内文書のありかを検索できます。")
+    st.markdown("##### 【入力例】社員の育成方針に関するMTGの議事録")
+
+    st.markdown("### 【『社内問い合わせ』を選択した場合】")
+    st.info("質問・要望に対して、社内文書の情報をもとに回答を得られます。")
+    st.markdown("##### 【入力例】人事部に所属している従業員情報を一覧化して")
+
+    st.markdown("### 【社員情報を含む質問】")
+    st.info("人事・従業員・部署に関する質問をすると、社員名簿のデータを参照して回答します。")
+
+    # 開発者メニュー切り替えボタンの表示
+    cn.render_dev_toggle_button()
+
 # タイトル表示
 cn.display_app_title()
-
-# モード表示
-cn.display_select_mode()
 
 # AIメッセージの初期表示
 cn.display_initial_ai_message()
