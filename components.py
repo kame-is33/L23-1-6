@@ -23,8 +23,8 @@ def display_app_title():
     st.markdown(
         """
         <div style="display: flex; align-items: center; background-color: #f0fdf4; padding: 1rem; border-radius: 10px;">
-            <div style="width: 36px; height: 36px; background-color: #ff8000; border-radius: 5px; display: flex; align-items: center; justify-content: center; margin-right: 0.5rem;">
-              <img src="https://raw.githubusercontent.com/kame-is33/L23-1-6/main/assets/robot_icon.png" alt="AI Bot" width="20" height="20">
+            <div style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; margin-right: 0.5rem;">
+              <img src="https://raw.githubusercontent.com/kame-is33/L23-1-6/main/assets/robot_icon_white.png" alt="AI Bot" width="30" height="30">
             </div>
             <span>こんにちは。私は社内文書の情報をもとに回答する生成AIチャットボットです。サイドバーで利用目的を選択し、画面下部のチャット欄からメッセージを送信してください。</span>
         </div>
@@ -65,8 +65,8 @@ def display_initial_ai_message():
           st.markdown(
               """
               <div style="display: flex; align-items: center; background-color: #f0fdf4; padding: 1rem; border-radius: 10px;">
-                  <div style="width: 36px; height: 36px; background-color: #ff8000; border-radius: 5px; display: flex; align-items: center; justify-content: center; margin-right: 0.5rem;">
-                    <img src="https://raw.githubusercontent.com/kame-is33/L23-1-6/main/assets/robot_icon.png" alt="AI Bot" width="20" height="20">
+                  <div style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; margin-right: 0.5rem;">
+                    <img src="https://raw.githubusercontent.com/kame-is33/L23-1-6/main/assets/robot_icon_white.png" alt="AI Bot" width="30" height="30">
                   </div>
                   <span>こんにちは。私は社内文書の情報をもとに回答する生成AIチャットボットです。サイドバーで利用目的を選択し、画面下部のチャット欄からメッセージを送信してください。</span>
               </div>
