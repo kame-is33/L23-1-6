@@ -148,6 +148,7 @@ def format_row(row):
         整形された文字列
     """
     parts = []
+    部署 = row.get("所属部署", "不明")
     
     def add(label, key):
         value = row.get(key, "不明")
@@ -155,6 +156,7 @@ def format_row(row):
         parts.append(f"- **{label}**: {value}")
 
     parts.append(f"#### {row.get('氏名（フルネーム）', '不明')}")
+    parts.append(f"- **所属部署**: {部署}")
     add("社員ID", "社員ID")
     add("性別", "性別")
     add("生年月日", "生年月日")
