@@ -403,3 +403,17 @@ def render_dataframe(df: pd.DataFrame, title: str = "検索結果（社内問い
 
     st.markdown(f"### {title}")
     st.dataframe(df, use_container_width=True)
+
+def render_dev_toggle_button():
+    """
+    開発者モードを切り替えるボタンを画面左下に表示
+    ボタン押下でDEBUGログの表示切り替えが可能
+    """
+    col1, _, _ = st.columns([1, 8, 1])
+    with col1:
+        if st.button("⚙️ 開発者モード", key="dev_mode_toggle"):
+            st.session_state.show_debug_logs = not st.session_state.get("show_debug_logs", False)
+
+    if st.session_state.get("show_debug_logs"):
+        st.sidebar.subheader("⚙️ 開発者メニュー")
+        st.sidebar.checkbox("DEBUGログを表示する", key="debug_checkbox")
