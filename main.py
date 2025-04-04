@@ -110,9 +110,6 @@ with st.sidebar:
 # タイトル表示
 cn.display_app_title()
 
-# AIメッセージの初期表示
-cn.display_initial_ai_message()
-
 # 開発者メニュー切り替えボタンの表示
 cn.render_dev_toggle_button()
 
