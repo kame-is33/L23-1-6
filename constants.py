@@ -24,9 +24,9 @@ LINK_SOURCE_ICON = ":material/link: "
 WARNING_ICON = ":material/warning:"
 ERROR_ICON = ":material/error:"
 SPINNER_TEXT = "回答生成中..."
-BOT_ICON = ":robot_face:"  # ロボットアイコンの追加
-DEBUG_ICON = ":material/bug-report:"  # デバッグ用のアイコン
-ADVICE_ICON = ":material/lightbulb:"  # 助言・ヒント用のアイコン
+BOT_ICON = "🤖"  # ロボットアイコンの追加
+DEBUG_ICON = "🐞"  # デバッグ用のアイコン
+ADVICE_ICON = "💡"  # 助言・ヒント用のアイコン
 
 
 # ==========================================
