@@ -113,7 +113,7 @@ if chat_message:
     employee_context = ""
     if "人事" in chat_message or "従業員" in chat_message or "部署" in chat_message:
         try:
-            df = pd.read_csv("data/社員名簿.csv")
+            df = pd.read_csv("data/社員について/社員名簿.csv")
             def format_row(row):
                 skills = str(row.get("スキルセット", "")).replace(",", "、").strip()
                 certs = str(row.get("保有資格", "")).replace(",", "、").strip()

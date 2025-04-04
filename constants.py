@@ -64,7 +64,7 @@ WEB_URL_LOAD_TARGETS = [
     "https://generative-ai.web-camp.io/"
 ]
 
-EMPLOYEE_CSV_PATH = "./data/社員名簿.csv"
+EMPLOYEE_CSV_PATH = "./data/社員について/社員名簿.csv"
 EMPLOYEE_CONTEXT_TRIGGER_WORDS = ["人事", "従業員", "部署"]
 
 
