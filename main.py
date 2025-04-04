@@ -142,7 +142,8 @@ def build_employee_context(chat_message):
         try:
             df = pd.read_csv("data/社員について/社員名簿.csv")
 
-            df.columns = df.columns.str.strip().str.replace("（", "(").str.replace("）", ")")
+            # 列名の整形
+            df.columns = df.columns.str.strip().str.replace("（", "(", regex=False).str.replace("）", ")", regex=False)
             df = df[df["氏名（フルネーム）"] != "氏名（フルネーム）"]
             logger.warning(f"社員名簿の列名一覧: {df.columns.tolist()}")
             # 検索条件の定義
@@ -154,7 +155,7 @@ def build_employee_context(chat_message):
                 "マネージャー": lambda df: df["役職"].str.contains("マネージャー", na=False),
                 "女性": lambda df: df["性別"] == "女性",
                 "上智大学": lambda df: df["大学名"].str.contains("上智", na=False),
-                "59歳": lambda df: df["年齢"] == "59",
+                "59歳": lambda df: df["年齢"].astype(str) == "59",  # 年齢カラムが数値である可能性に備えて
                 "SQL": lambda df: df["スキルセット"].str.contains("SQL", na=False),
                 "Python": lambda df: df["スキルセット"].str.contains("Python", na=False),
             }

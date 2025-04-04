@@ -1,5 +1,5 @@
 """
-このファイルは、最初の画面読み込み時にのみ実行される初期化処理が記述されたファイルです。
+# このファイルは、Streamlitアプリの起動時に実行される初期化処理をまとめたものです。
 """
 
 ############################################################
@@ -71,12 +71,6 @@ def initialize_logger():
         encoding="utf8"
     )
     # 出力するログメッセージのフォーマット定義
-    # - 「levelname」: ログの重要度（INFO, WARNING, ERRORなど）
-    # - 「asctime」: ログのタイムスタンプ（いつ記録されたか）
-    # - 「lineno」: ログが出力されたファイルの行番号
-    # - 「funcName」: ログが出力された関数名
-    # - 「session_id」: セッションID（誰のアプリ操作か分かるように）
-    # - 「message」: ログメッセージ
     formatter = logging.Formatter(
         f"[%(levelname)s] %(asctime)s line %(lineno)s, in %(funcName)s, session_id={st.session_state.session_id}: %(message)s"
     )
@@ -90,7 +84,6 @@ def initialize_logger():
     # 作成したハンドラー（ログ出力先を制御するオブジェクト）を、
     # ロガー（ログメッセージを実際に生成するオブジェクト）に追加してログ出力の最終設定
     logger.addHandler(log_handler)
-    logger.info("Logger initialized successfully.")
 
 
 def initialize_session_id():
@@ -127,7 +120,7 @@ def initialize_retriever():
     
     # チャンク分割用のオブジェクトを作成
     text_splitter = CharacterTextSplitter(
-        chunk_size=500,
+        chunk_size=800,
         chunk_overlap=50,
         separator="\n"
     )
@@ -259,6 +252,9 @@ def initialize_employee_data():
     if os.path.exists(employee_path):
         try:
             df = pd.read_csv(employee_path)
+            # 列名の表記揺れ対策
+            if "所属部署" not in df.columns and "部署" in df.columns:
+                df = df.rename(columns={"部署": "所属部署"})
             st.session_state.employee_data = df
         except Exception as e:
             logging.getLogger(ct.LOGGER_NAME).warning(f"社員名簿の読み込みに失敗しました: {e}")

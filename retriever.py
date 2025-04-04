@@ -121,3 +121,22 @@ def normalize_column_names(df, mapping=None):
 
     df = df.rename(columns=lambda col: mapping.get(col, col))
     return df
+
+def standardize_column_names(df):
+    """
+    社員名簿用の列名標準化マッピングを適用し、表記揺れに対応。
+    """
+    standard_columns = {
+        "氏名（フルネーム）": "氏名",
+        "フルネーム": "氏名",
+        "名前": "氏名",
+        "部署": "所属部署",
+        "部門": "所属部署",
+        "部署名": "所属部署",
+        "メール": "メールアドレス",
+        "Eメール": "メールアドレス",
+        "E-mail": "メールアドレス",
+    }
+
+    df.columns = [standard_columns.get(col.strip(), col.strip()) for col in df.columns]
+    return df

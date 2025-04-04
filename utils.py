@@ -254,9 +254,12 @@ def is_employee_related_mode_and_input() -> bool:
         return False
 
     guidance_keywords = [
-        "人事部に所属している従業員情報を一覧化して",
-        "人事部に所属する全従業員のスキルセットを一覧にしてください",
-        "人事・従業員・部署"
+        "人事部に所属",
+        "部署に所属",
+        "従業員のスキルセット",
+        "従業員情報",
+        "社員情報",
+        "部署情報"
     ]
 
     current_input = st.session_state.get("input_message", "")

@@ -12,6 +12,9 @@ from langchain_community.document_loaders.csv_loader import CSVLoader
 # 共通変数の定義
 ############################################################
 
+# 画面構成設定
+SHOW_EMPLOYEE_CONTEXT_GUIDE = True  # 社員情報のトリガー説明文を表示するか制御
+
 # ==========================================
 # 画面表示系
 # ==========================================
@@ -43,8 +46,8 @@ APP_BOOT_MESSAGE = "アプリが起動されました。"
 # ==========================================
 MODEL = "gpt-4o-mini"
 TEMPERATURE = 0.5
-RETRIEVER_TOP_K = 20  # 社員情報の網羅性を高めるために増加
-MAX_CONTEXT_LENGTH = 8000  # CSVのデータ量に対応するため拡張
+RETRIEVER_TOP_K = 30  # 網羅性を上げるために拡大
+MAX_CONTEXT_LENGTH = 12000  # データ量に余裕を持たせるために拡大
 
 # ==========================================
 # チャンク分割設定
@@ -68,7 +71,7 @@ WEB_URL_LOAD_TARGETS = [
 ]
 
 EMPLOYEE_CSV_PATH = "./data/社員について/社員名簿.csv"
-EMPLOYEE_CONTEXT_TRIGGER_WORDS = ["人事", "従業員", "部署"]
+EMPLOYEE_CONTEXT_TRIGGER_WORDS = ["人事", "従業員", "部署", "社員", "配属"]
 
 
 # ==========================================

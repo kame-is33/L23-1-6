@@ -19,7 +19,18 @@ def display_app_title():
     """
     タイトル表示
     """
-    st.markdown(f"## {ct.BOT_ICON} {ct.APP_NAME}")
+    st.markdown(
+        """
+        <style>
+        .app-title {
+            color: #FFA500; /* オレンジ色 */
+            font-size: 2em; /* フォントサイズ */
+            font-weight: bold; /* 太字 */
+        }
+        </style>
+        """, unsafe_allow_html=True
+    )
+    st.markdown(f"<div class='app-title'>{ct.BOT_ICON} {ct.APP_NAME}</div>", unsafe_allow_html=True)
     st.markdown("こんにちは。私は社内文書の情報をもとに回答する生成AIチャットボットです。サイドバーで利用目的を選択し、画面下部のチャット欄からメッセージを送信してください。")
     st.info(f"{ct.ADVICE_ICON} 具体的に入力したほうが期待通りの回答を得やすいです。")
 
@@ -341,7 +352,11 @@ def render_debug_toggle():
     with st.sidebar:
         st.markdown("---")
         st.markdown("#### 開発者モード")
-        st.toggle("DEBUGログを表示する", key="debug_checkbox")
+        debug_toggle = st.checkbox("DEBUGログを表示する", key="debug_checkbox")
+        if debug_toggle:
+            st.session_state["debug_mode"] = True
+        else:
+            st.session_state["debug_mode"] = False
 
 
 def get_dataframe_display_options(df: pd.DataFrame, max_chars: int = 3000) -> pd.DataFrame:
@@ -371,19 +386,19 @@ def display_sample_prompts():
     """
     左サイドバーに表示される入力例のセクション。
     """
-    st.markdown("### 『社内文書検索』を選択した場合")
+    st.subheader("『社内文書検索』を選択した場合")
     st.info("入力内容と関連性が高い社内文書のありかを検索できます。")
-    st.markdown("#### 【入力例】")
+    st.subheader("【入力例】")
     st.write("社員の育成方針に関するMTGの議事録")
 
-    st.markdown("### 『社内問い合わせ』を選択した場合")
+    st.subheader("『社内問い合わせ』を選択した場合")
     st.info("質問・要望に対して、社内文書の情報をもとに回答を得られます。")
-    st.markdown("#### 【入力例】")
+    st.subheader("【入力例】")
     st.write("人事部に所属している従業員情報を一覧化して")
 
-    st.markdown("### 【社員情報を含む質問】")
+    st.subheader("【社員情報を含む質問】")
     st.info("人事・従業員・部署に関する質問をすると、社員名簿のデータを参照して回答します。")
-    st.markdown("#### 【入力例】")
+    st.subheader("【入力例】")
     st.write("人事部に所属する全従業員のスキルセットを一覧にしてください")
 
 def render_dataframe(df: pd.DataFrame, title: str = "検索結果（社内問い合わせ）") -> None:
