@@ -89,6 +89,8 @@ cn.display_initial_ai_message()
 
 # DEBUGログ表示スイッチの表示
 cn.render_debug_toggle()
+# 開発者メニュー切り替えボタンの表示
+cn.render_dev_toggle_button()
 
 ############################################################
 # 5. 会話ログの表示
