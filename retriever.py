@@ -82,16 +82,24 @@ def get_all_documents(data_path: str):
 
 def create_vector_store(data_path: str):
     documents = get_all_documents(data_path)
+    if not documents:
+        print("No documents to process.")
+        return
+
     embeddings = OpenAIEmbeddings()
     text_splitter = RecursiveCharacterTextSplitter()
-    
+
+    texts = []
+    metadatas = []
     for doc in documents:
         chunks = text_splitter.split_text(doc.page_content)
-        for chunk in chunks:
-            Chroma.add_texts([chunk], embeddings.embed_documents([chunk]), metadatas=[doc.metadata])
+        texts.extend(chunks)
+        metadatas.extend([doc.metadata] * len(chunks))
 
-def search_query(query: str, k: int):
+    Chroma.from_texts(texts, embeddings, metadatas=metadatas)
+
+def search_query(query: str, k: int = 5):
     embeddings = OpenAIEmbeddings()
-    vector_store = Chroma()
+    vector_store = Chroma(persist_directory=".chroma", embedding_function=embeddings)
     results = vector_store.similarity_search(query, k=k)
     return results

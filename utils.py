@@ -188,5 +188,10 @@ def debug_log(message):
     Args:
         message: 表示したいログ内容
     """
-    if st.session_state.get("show_debug_logs"):
-        st.sidebar.markdown(f"```text\n{message}\n```")
+    if "show_debug_logs" not in st.session_state:
+        st.session_state.show_debug_logs = False
+
+    if st.session_state.show_debug_logs:
+        with st.sidebar:
+            st.markdown("#### 開発者ログ")
+            st.code(message, language="text")

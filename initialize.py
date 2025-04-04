@@ -90,6 +90,7 @@ def initialize_logger():
     # 作成したハンドラー（ログ出力先を制御するオブジェクト）を、
     # ロガー（ログメッセージを実際に生成するオブジェクト）に追加してログ出力の最終設定
     logger.addHandler(log_handler)
+    logger.info("Logger initialized successfully.")
 
 
 def initialize_session_id():

@@ -335,11 +335,13 @@ def display_contact_llm_response(llm_response):
 
 def render_debug_toggle():
     """
-    開発者モードを切り替える小さなアイコン付きボタンを画面左下に表示。
-    ボタンを押すとDEBUGログの表示/非表示が切り替わる。
+    開発者モードを切り替えるトグルスイッチ（ON/OFF）を画面左下に表示。
+    トグルを切り替えるとDEBUGログの表示/非表示が切り替わる。
     """
-    with st.sidebar.expander(f"{ct.DEBUG_ICON} 開発者メニュー", expanded=False):
-        st.checkbox("DEBUGログを表示する", key="debug_checkbox")
+    with st.sidebar:
+        st.markdown("---")
+        st.markdown("#### 開発者モード")
+        st.toggle("DEBUGログを表示する", key="debug_checkbox")
 
 
 def get_dataframe_display_options(df: pd.DataFrame, max_chars: int = 3000) -> pd.DataFrame:

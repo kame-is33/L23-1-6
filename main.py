@@ -104,8 +104,12 @@ with st.sidebar:
     with dev_col1:
         st.markdown("🛠️", unsafe_allow_html=True)
     with dev_col2:
-        if st.button("開発者モード", key="dev_mode_button", help="ログ表示などの開発用メニューの切り替え"):
-            st.session_state.show_debug_logs = not st.session_state.get("show_debug_logs", False)
+        st.session_state.show_debug_logs = st.toggle(
+            "開発者モード", 
+            value=st.session_state.get("show_debug_logs", False), 
+            key="dev_mode_toggle", 
+            help="ログ表示などの開発用メニューの切り替え"
+        )
 
 # タイトル表示
 cn.display_app_title()
