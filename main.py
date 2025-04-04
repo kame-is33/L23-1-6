@@ -211,7 +211,9 @@ def handle_chat(chat_message):
         # ==========================================
         # 7-2. LLMからの回答取得
         # ==========================================
-        employee_context = build_employee_context(chat_message)
+        employee_context = ""
+        if utils.should_use_employee_data(chat_message, st.session_state.mode):
+            employee_context = build_employee_context(chat_message)
         # 「st.spinner」でグルグル回っている間、表示の不具合が発生しないよう空のエリアを表示
         res_box = st.empty()
         # LLMによる回答生成（回答生成が完了するまでグルグル回す）

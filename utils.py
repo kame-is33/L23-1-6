@@ -204,6 +204,28 @@ def format_row(row):
 
     return "\n".join(parts)
 
+def should_use_employee_data(user_input: str, mode: str) -> bool:
+    """
+    ユーザー入力と選択モードに応じて社員情報の使用可否を判定
+
+    Args:
+        user_input: ユーザーの質問テキスト
+        mode: 社内問い合わせ or 社内文書検索
+
+    Returns:
+        True: 社員情報を使用すべき
+        False: 不要
+    """
+    # 入力例にマッチする場合は優先的にTrueを返す
+    if is_employee_related_mode_and_input():
+        return True
+
+    if mode != ct.ANSWER_MODE_2:  # 社内問い合わせ でない場合は使わない
+        return False
+
+    employee_keywords = ["人事", "従業員", "社員", "部署", "役職", "スキルセット"]
+    return any(kw in user_input for kw in employee_keywords)
+
 def debug_log(message):
     """
     Streamlitアプリの開発時にのみログを表示するための関数
@@ -218,3 +240,24 @@ def debug_log(message):
         with st.sidebar:
             st.markdown("#### 開発者ログ")
             st.code(message, language="text")
+
+def is_employee_related_mode_and_input() -> bool:
+    """
+    画面モードと入力例の内容に基づいて社員情報を利用すべきか判定する関数。
+    '社内問い合わせ'モードかつ、入力例が社員情報を含む内容であれば True。
+
+    Returns:
+        True: 社員情報を参照するべき
+        False: 参照しない
+    """
+    if st.session_state.get("mode") != ct.ANSWER_MODE_2:
+        return False
+
+    guidance_keywords = [
+        "人事部に所属している従業員情報を一覧化して",
+        "人事部に所属する全従業員のスキルセットを一覧にしてください",
+        "人事・従業員・部署"
+    ]
+
+    current_input = st.session_state.get("input_message", "")
+    return any(keyword in current_input for keyword in guidance_keywords)
