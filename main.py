@@ -141,9 +141,10 @@ def build_employee_context(chat_message):
     if any(keyword in chat_message for keyword in ["人事部", "営業部", "資格", "インターン", "マネージャー", "女性", "上智大学", "59歳", "SQL", "Python"]):
         try:
             df = pd.read_csv("data/社員について/社員名簿.csv")
+
             df.columns = df.columns.str.strip().str.replace("（", "(").str.replace("）", ")")
             df = df[df["氏名（フルネーム）"] != "氏名（フルネーム）"]
-
+            logger.warning(f"社員名簿の列名一覧: {df.columns.tolist()}")
             # 検索条件の定義
             keyword_filters = {
                 "人事部": lambda df: df["所属部署"].str.contains("人事", na=False),
