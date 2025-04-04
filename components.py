@@ -349,22 +349,32 @@ def display_contact_llm_response(llm_response):
 
 def render_debug_toggle():
     """
-    DEBUGログ表示のオン・オフ切り替えスイッチ
-    アイコンボタンをクリックすると、チェックボックスが表示される
+    開発者モードを切り替える小さなアイコン付きボタンを画面左下に表示。
+    ボタンを押すとDEBUGログの表示/非表示が切り替わる。
     """
-    st.sidebar.markdown("---")
-    # 初期化（初回実行時のみ）
-    if "show_debug_toggle" not in st.session_state:
-        st.session_state.show_debug_toggle = False
+    st.markdown(
+        """
+        <div style="position: fixed; bottom: 20px; left: 20px; z-index: 9999;">
+            <form action="" method="post">
+                <button type="submit" name="dev_toggle" style="background: none; border: none; cursor: pointer;">
+                    ⚙️ <span style="font-size: 0.8rem;">開発者</span>
+                </button>
+            </form>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
-    # アイコンボタンで表示切り替え
-    if st.sidebar.button("⚙️ 開発者メニューを切り替え"):
-        st.session_state.show_debug_toggle = not st.session_state.show_debug_toggle
+    # ステート初期化
+    if "show_debug_logs" not in st.session_state:
+        st.session_state.show_debug_logs = False
 
-    # チェックボックス表示（表示ONの場合）
-    if st.session_state.show_debug_toggle:
-        st.sidebar.subheader("🛠️ 開発者ツール")
-        st.session_state.show_debug_logs = st.sidebar.checkbox("🔧 DEBUGログを表示する", value=False)
+    if "dev_toggle" in st.session_state and st.session_state.dev_toggle:
+        st.session_state.show_debug_logs = not st.session_state.show_debug_logs
+
+    if st.session_state.show_debug_logs:
+        st.sidebar.subheader("⚙️ 開発者メニュー")
+        st.sidebar.checkbox("DEBUGログを表示する", key="debug_checkbox")
 
 def get_dataframe_display_options(df: pd.DataFrame, max_chars: int = 3000) -> pd.DataFrame:
     """
@@ -389,6 +399,25 @@ def get_dataframe_display_options(df: pd.DataFrame, max_chars: int = 3000) -> pd
 
     return df.loc[output_lines]
 
+def display_sample_prompts():
+    """
+    左サイドバーに表示される入力例のセクション。
+    """
+    st.markdown("### 『社内文書検索』を選択した場合")
+    st.info("入力内容と関連性が高い社内文書のありかを検索できます。")
+    st.markdown("#### 【入力例】")
+    st.write("社員の育成方針に関するMTGの議事録")
+
+    st.markdown("### 『社内問い合わせ』を選択した場合")
+    st.info("質問・要望に対して、社内文書の情報をもとに回答を得られます。")
+    st.markdown("#### 【入力例】")
+    st.write("人事部に所属している従業員情報を一覧化して")
+
+    st.markdown("### 【社員情報を含む質問】")
+    st.info("人事・従業員・部署に関する質問をすると、社員名簿のデータを参照して回答します。")
+    st.markdown("#### 【入力例】")
+    st.write("人事部に所属する全従業員のスキルセットを一覧にしてください")
+
 def render_dataframe(df: pd.DataFrame, title: str = "検索結果（社内問い合わせ）") -> None:
     """
     社内問い合わせの回答としてDataFrameを表示するための関数
@@ -403,33 +432,3 @@ def render_dataframe(df: pd.DataFrame, title: str = "検索結果（社内問い
 
     st.markdown(f"### {title}")
     st.dataframe(df, use_container_width=True)
-
-def render_dev_toggle_button():
-    """
-    開発者モードを切り替える小さなアイコン付きボタンを画面左下に表示。
-    ボタンを押すとDEBUGログの表示/非表示が切り替わる。
-    """
-    with st.container():
-        st.markdown(
-            """
-            <div style="position: fixed; bottom: 20px; left: 20px; z-index: 9999;">
-                <form action="" method="post">
-                    <button type="submit" name="dev_toggle" style="background: none; border: none; cursor: pointer;">
-                        ⚙️ <span style="font-size: 0.8rem;">開発者</span>
-                    </button>
-                </form>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    # ボタン処理用
-    if "show_debug_logs" not in st.session_state:
-        st.session_state.show_debug_logs = False
-
-    if st.session_state.get("dev_toggle", False):
-        st.session_state.show_debug_logs = not st.session_state.show_debug_logs
-
-    if st.session_state.show_debug_logs:
-        st.sidebar.subheader("⚙️ 開発者メニュー")
-        st.sidebar.checkbox("DEBUGログを表示する", key="debug_checkbox")
