@@ -29,6 +29,23 @@ load_dotenv()
 # 関数定義
 ############################################################
 
+def find_matching_column(columns, keywords):
+    """
+    与えられたキーワードを含む列名を部分一致で探す関数
+
+    Args:
+        columns: データフレームの列名リスト
+        keywords: 一致を試みるキーワード（リスト）
+
+    Returns:
+        見つかった列名（文字列）または None
+    """
+    for col in columns:
+        if all(k in col for k in keywords):
+            return col
+    return None
+
+
 def get_source_icon(source):
     """
     メッセージと一緒に表示するアイコンの種類を取得
@@ -150,14 +167,16 @@ def format_row(row):
     """
     row = normalize_column_names(row.to_frame().T).iloc[0]
     parts = []
-    部署 = row.get("所属部署", "不明")
+    部署_col = find_matching_column(row.index, ["部署"])
+    部署 = row.get(部署_col, "不明")
     
     def add(label, key):
         value = row.get(key, "不明")
         value = "不明" if pd.isna(value) or value == "" else str(value)
         parts.append(f"- **{label}**: {value}")
 
-    parts.append(f"#### {row.get('氏名（フルネーム）', '不明')}")
+    氏名_col = find_matching_column(row.index, ["氏名"])
+    parts.append(f"#### {row.get(氏名_col, '不明')}")
     parts.append(f"- **所属部署**: {部署}")
     add("社員ID", "社員ID")
     add("性別", "性別")
