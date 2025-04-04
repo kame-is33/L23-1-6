@@ -20,6 +20,24 @@ def display_app_title():
     タイトル表示
     """
     st.markdown(f"## {ct.APP_NAME}")
+    st.markdown(
+        """
+        <div style="display: flex; align-items: center; background-color: #f0fdf4; padding: 1rem; border-radius: 10px;">
+            <span style="font-size: 1.5rem; margin-right: 0.5rem;">🟧</span>
+            <span>こんにちは。私は社内文書の情報をもとに回答する生成AIチャットボットです。サイドバーで利用目的を選択し、画面下部のチャット欄からメッセージを送信してください。</span>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+ 
+    st.markdown(
+        """
+        <div style="margin-top: 1rem; background-color: #fff7e6; padding: 1rem; border-radius: 10px;">
+            ⚠️ <span>具体的に入力したほうが期待通りの回答を得やすいです。</span>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 
 def display_select_mode():
