@@ -159,11 +159,20 @@ def build_employee_context(chat_message):
                 "Python": lambda df: df["スキルセット"].str.contains("Python", na=False),
             }
 
-            # AND条件でフィルタリングを適用
-            filtered_df = df.copy()
+            # OR条件でフィルタリングを適用
+            conditions = []
+
             for keyword, condition in keyword_filters.items():
                 if keyword in chat_message:
-                    filtered_df = filtered_df[condition(filtered_df)]
+                    conditions.append(condition(df))
+
+            if conditions:
+                combined_condition = conditions[0]
+                for cond in conditions[1:]:
+                    combined_condition |= cond
+                filtered_df = df[combined_condition]
+            else:
+                filtered_df = df.copy()
 
             formatted = format_row(filtered_df)
             if len(formatted) <= MAX_CONTEXT_LENGTH:
