@@ -406,14 +406,30 @@ def render_dataframe(df: pd.DataFrame, title: str = "検索結果（社内問い
 
 def render_dev_toggle_button():
     """
-    開発者モードを切り替えるボタンを画面左下に表示
-    ボタン押下でDEBUGログの表示切り替えが可能
+    開発者モードを切り替える小さなアイコン付きボタンを画面左下に表示。
+    ボタンを押すとDEBUGログの表示/非表示が切り替わる。
     """
-    col1, _, _ = st.columns([1, 8, 1])
-    with col1:
-        if st.button("⚙️ 開発者モード", key="dev_mode_toggle"):
-            st.session_state.show_debug_logs = not st.session_state.get("show_debug_logs", False)
+    with st.container():
+        st.markdown(
+            """
+            <div style="position: fixed; bottom: 20px; left: 20px; z-index: 9999;">
+                <form action="" method="post">
+                    <button type="submit" name="dev_toggle" style="background: none; border: none; cursor: pointer;">
+                        ⚙️ <span style="font-size: 0.8rem;">開発者</span>
+                    </button>
+                </form>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
-    if st.session_state.get("show_debug_logs"):
+    # ボタン処理用
+    if "show_debug_logs" not in st.session_state:
+        st.session_state.show_debug_logs = False
+
+    if st.session_state.get("dev_toggle", False):
+        st.session_state.show_debug_logs = not st.session_state.show_debug_logs
+
+    if st.session_state.show_debug_logs:
         st.sidebar.subheader("⚙️ 開発者メニュー")
         st.sidebar.checkbox("DEBUGログを表示する", key="debug_checkbox")
