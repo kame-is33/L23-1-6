@@ -103,3 +103,21 @@ def search_query(query: str, k: int = 5):
     vector_store = Chroma(persist_directory=".chroma", embedding_function=embeddings)
     results = vector_store.similarity_search(query, k=k)
     return results
+
+def normalize_column_names(df, mapping=None):
+    """
+    データフレーム内の列名を正規化して、表記揺れに対応する。
+    例: {"所属部署": "部署"} のようなマッピングで一貫性を保つ。
+    """
+    if mapping is None:
+        mapping = {
+            "部署名": "所属部署",
+            "部署": "所属部署",
+            "部門": "所属部署",
+            "氏名（フルネーム）": "氏名",
+            "メール": "メールアドレス",
+            "Eメール": "メールアドレス"
+        }
+
+    df = df.rename(columns=lambda col: mapping.get(col, col))
+    return df

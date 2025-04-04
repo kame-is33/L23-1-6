@@ -15,6 +15,7 @@ from langchain.chains import create_history_aware_retriever, create_retrieval_ch
 from langchain.chains.combine_documents import create_stuff_documents_chain
 import constants as ct
 import pandas as pd
+from retriever import normalize_column_names
 
 
 ############################################################
@@ -147,6 +148,7 @@ def format_row(row):
     Returns:
         整形された文字列
     """
+    row = normalize_column_names(row.to_frame().T).iloc[0]
     parts = []
     部署 = row.get("所属部署", "不明")
     
