@@ -23,7 +23,7 @@ def display_app_title():
     st.markdown(
         """
         <div style="display: flex; align-items: center; background-color: #f0fdf4; padding: 1rem; border-radius: 10px;">
-            <span style="font-size: 1.5rem; margin-right: 0.5rem;">🟧</span>
+            <img src="https://raw.githubusercontent.com/kame-is33/L23-1-6/main/assets/robot_icon.png" alt="AI Bot" width="36" height="36" style="margin-right: 0.5rem; background-color: #ff8000; border-radius: 5px; padding: 0.3rem;">
             <span>こんにちは。私は社内文書の情報をもとに回答する生成AIチャットボットです。サイドバーで利用目的を選択し、画面下部のチャット欄からメッセージを送信してください。</span>
         </div>
         """,
@@ -63,7 +63,7 @@ def display_initial_ai_message():
           st.markdown(
               """
               <div style="display: flex; align-items: center; background-color: #f0fdf4; padding: 1rem; border-radius: 10px;">
-                  <span style="font-size: 1.5rem; margin-right: 0.5rem;">🟧</span>
+                  <img src="https://raw.githubusercontent.com/kame-is33/L23-1-6/main/assets/robot_icon.png" alt="AI Bot" width="36" height="36" style="margin-right: 0.5rem; background-color: #ff8000; border-radius: 5px; padding: 0.3rem;">
                   <span>こんにちは。私は社内文書の情報をもとに回答する生成AIチャットボットです。サイドバーで利用目的を選択し、画面下部のチャット欄からメッセージを送信してください。</span>
               </div>
               """,
