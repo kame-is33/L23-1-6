@@ -250,4 +250,3 @@ def handle_chat(chat_message):
 
 if chat_message:
     handle_chat(chat_message)
-"""
